@@ -1,0 +1,95 @@
+# =================== Manejo de base de datos =================================
+mybatis:
+  mapper-locations: classpath:static/mappers/*.xml
+spring:
+  application:
+    name: Configuraciones
+  datasource:
+    url: ${URIS-DATA-BASE:jdbc:oracle:thin:@35.215.83.21:1521:FFMDEV}
+    username: ${USER-DATA-BASE:FFMAPP}
+    password: ${PASS-DATA-BASE:tpBank4pp01}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${USER-MONITOR:q}:${PASS-MONITOR:Q}@${HOST-BASICO:34.94.124.52}:8147/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+  instance:
+    prefer-ip-address: true
+    metadata-map:
+      management.context-path: /ffm/configuracion/actuator
+# =================== KAFKA ==================================================== 
+  kafka:
+    producer:
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers:
+        - ${BROKER-KAFKA}
+      #properties: En caso de requerir configuraciones adicionales en cafka
+       # -
+    consumer:
+      group-id: group
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: 
+      - ${BROKER-KAFKA}
+      #properties: En caso de requerir configuraciones adicionales en cafka
+       # -
+
+# =================== Configuracion del microservicio ===========================
+server:
+  #port:  
+  servlet:
+    context-path: /ffm/config
+
+
+#==================== Configuración de logs ======================================
+logging:
+  level:
+    root: ${LOG-LEVEL}
+  file:
+    name: logmicroservico.log
+    max-history: ${LOG-NUM_FILES}
+    max-size: ${LOG-TAMA-LOG}
+    
+#==================== Configuración de monitoreo =================================
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  
+# =================== Autentiocacion y Deserealizacion del JWT =================== 
+seguridad:
+  jwt:
+    header: Authorization
+    prefix: Bearer
+    detail: authorities
+    secret: ${JWTSEG-SECRET}
+    
+# =================== Documentación OpenAPI 3.0 =================================== 
+ffm:
+  api:
+    title: Arquetipo FFM Back -> WS
+    version: V 1.0
+    description: >-
+      Plasma las capas en las que se divide la funcionaalidad de las apis
+      y se muestra un ejemplo de estructura y anotaciones necesarias para
+      la documentacion, asi mismo ya cuenta con seguridad integrada y la
+      deserealizacion del JWT se almacena en la clase Variables del packete
+      component en el atributo detalleJWT
+  developer:
+    name: Gamaliel Aguilar
+    email: https://www.linkedin.com/in/gamaliel-aguilar-cer%C3%B3n-66729a15a/
+    url: 

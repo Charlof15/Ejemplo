@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper 
+namespace="com.ffm.configuraciones.mapper.ConfiguracionMapper">
+
+	<select id="consultaConfiguracion"
+		resultType="com.ffm.configuraciones.model.output.ConsultaConfiguracion">
+		SELECT
+		FGCF_ID idConfigGeneral, FGCF_LLAVE llave,FGCF_VALOR valor,
+		FGCF_FECHA_ACTUALIZACION fechaCreacion,
+		FCCO_ID idTipoConfiguracion,FCCO_DESCRIPCION tipoConfiguracion
+		FROM FFM_CONFIG_GENERALES C, FFM_CAT_CONFIGURACIONES A
+		WHERE
+		FCUN_ID_UNIDAD_NEGOCIO = #{idUnidadNegocio} AND
+		FCPR_ID_PROPIETARIO = #{idPropietario}
+	</select>
+
+    
+</mapper>
